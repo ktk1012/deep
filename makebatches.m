@@ -42,6 +42,9 @@ for b=1:numbatches
   batchdata(:,:,b) = digitdata(randomorder(1+(b-1)*batchsize:b*batchsize), :);
   batchtargets(:,:,b) = targets(randomorder(1+(b-1)*batchsize:b*batchsize), :);
 end;
+
+save trainbatch batchdata batchtargets;
+
 clear digitdata targets;
 
 digitdata=[];
@@ -74,6 +77,9 @@ for b=1:numbatches
   testbatchdata(:,:,b) = digitdata(randomorder(1+(b-1)*batchsize:b*batchsize), :);
   testbatchtargets(:,:,b) = targets(randomorder(1+(b-1)*batchsize:b*batchsize), :);
 end;
+
+save testbatch testbatchdata testbatchtargets;
+
 clear digitdata targets;
 
 

@@ -20,7 +20,7 @@
 clear all
 close all
 
-maxepoch=50; 
+maxepoch=10; 
 numhid=500; numpen=500; numpen2=2000; 
 
 fprintf(1,'Converting Raw files into Matlab format \n');

@@ -17,7 +17,7 @@
 % and trainig and test reconstruction errors in mnist_error.mat
 % You can also set maxepoch, default value is 200 as in our paper.  
 
-maxepoch=200;
+maxepoch=15;
 fprintf(1,'\nTraining discriminative model on MNIST by minimizing cross entropy error. \n');
 fprintf(1,'60 batches of 1000 cases each. \n');
 
@@ -25,7 +25,9 @@ load mnistvhclassify
 load mnisthpclassify
 load mnisthp2classify
 
-makebatches;
+%makebatches;
+
+
 [numcases numdims numbatches]=size(batchdata);
 N=numcases; 
 
