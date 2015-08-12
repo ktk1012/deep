@@ -17,7 +17,7 @@
 % and trainig and test reconstruction errors in mnist_error.mat
 % You can also set maxepoch, default value is 200 as in our paper.  
 
-maxepoch=200;
+maxepoch=50;
 fprintf(1,'\nFine-tuning deep autoencoder by minimizing cross entropy error. \n');
 fprintf(1,'60 batches of 1000 cases each. \n');
 
@@ -115,17 +115,14 @@ for batch = 1:testnumbatches
 
 %%%%%%%%%%%%%% END OF COMPUTING TEST RECONSTRUCTION ERROR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- tt=0;
- for batch = 1:numbatches/10
+
+ for batch = 1:numbatches
  fprintf(1,'epoch %d batch %d\r',epoch,batch);
 
 %%%%%%%%%%% COMBINE 10 MINIBATCHES INTO 1 LARGER MINIBATCH %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- tt=tt+1; 
- data=[];
- for kk=1:10
-  data=[data 
-        batchdata(:,:,(tt-1)*10+kk)]; 
- end 
+
+ data=batchdata(:,:,batch);
+ targets=batchtargets(:,:,batch);
 
 %%%%%%%%%%%%%%% PERFORM CONJUGATE GRADIENT WITH 3 LINESEARCHES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   max_iter=3;

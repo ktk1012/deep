@@ -14,11 +14,11 @@
 
 function [err] = mnistdisp(digits);
 % display a group of MNIST images 
-col=28;
-row=28;
+col=32;
+row=32;
 
 [dd,N] = size(digits);
-imdisp=zeros(2*28,ceil(N/2)*28);
+imdisp=zeros(2*32,ceil(N/2)*32);
 
 for nn=1:N
   ii=rem(nn,2); if(ii==0) ii=2; end

@@ -96,7 +96,7 @@ for batch = 1:testnumbatches
   targetout = exp(w3probs*w_class);
   targetout = targetout./repmat(sum(targetout,2),1,10);
 
-  [I J]=max(targetout,[],2);
+  [I J]=max(targetout,[],2); % return maximum value and the index of maximum value
   [I1 J1]=max(target,[],2);
   counter=counter+length(find(J==J1));
   err_cr = err_cr- sum(sum( target(:,1:end).*log(targetout))) ;

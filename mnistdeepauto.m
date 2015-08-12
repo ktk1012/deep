@@ -20,16 +20,19 @@
 clear all
 close all
 
-maxepoch=10; %In the Science paper we use maxepoch=50, but it works just fine. 
-numhid=1000; numpen=500; numpen2=250; numopen=30;
+maxepoch=50; %In the Science paper we use maxepoch=50, but it works just fine. 
+numhid=777; numpen=555; numpen2=333; numopen=10;
 
 fprintf(1,'Converting Raw files into Matlab format \n');
-converter; 
+%converter; 
 
 fprintf(1,'Pretraining a deep autoencoder. \n');
 fprintf(1,'The Science paper used 50 epochs. This uses %3i \n', maxepoch);
 
-makebatches;
+%makebatches;
+load trainbatch
+load testbatch
+
 [numcases numdims numbatches]=size(batchdata);
 
 fprintf(1,'Pretraining Layer 1 with RBM: %d-%d \n',numdims,numhid);
