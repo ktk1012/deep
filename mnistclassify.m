@@ -21,7 +21,7 @@ clear all
 close all
 
 maxepoch=50; 
-numhid=768; numpen=512; numpen2=256; 
+numhid=777; numpen=555; numpen2=333; 
 
 % fprintf(1,'Converting Raw files into Matlab format \n');
 % converter; 
