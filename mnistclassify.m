@@ -20,16 +20,20 @@
 clear all
 close all
 
-maxepoch=10; 
-numhid=500; numpen=500; numpen2=2000; 
+maxepoch=50; 
+numhid=768; numpen=512; numpen2=256; 
 
-fprintf(1,'Converting Raw files into Matlab format \n');
-converter; 
+% fprintf(1,'Converting Raw files into Matlab format \n');
+% converter; 
 
 fprintf(1,'Pretraining a deep autoencoder. \n');
 fprintf(1,'The Science paper used 50 epochs. This uses %3i \n', maxepoch);
 
-makebatches;
+%makebatches;
+
+load trainbatch
+load testbatch
+
 [numcases numdims numbatches]=size(batchdata);
 
 fprintf(1,'Pretraining Layer 1 with RBM: %d-%d \n',numdims,numhid);

@@ -34,10 +34,10 @@ function [X, fX, i] = minimize(X, f, length, varargin)
 %
 % Copyright (C) 2001 - 2006 by Carl Edward Rasmussen (2006-09-08).
 
-INT = 0.2;    % don't reevaluate within 0.1 of the limit of the current bracket
+INT = 0.3;    % don't reevaluate within 0.1 of the limit of the current bracket
 EXT = 3.0;                  % extrapolate maximum 3 times the current step-size
 MAX = 20;                         % max 20 function evaluations per line search
-RATIO = 10;                                       % maximum allowed slope ratio
+RATIO = 12;                                       % maximum allowed slope ratio
 SIG = 0.1; RHO = SIG/2; % SIG and RHO are the constants controlling the Wolfe-
 % Powell conditions. SIG is the maximum allowed absolute ratio between
 % previous and new slopes (derivatives in the search direction), thus setting

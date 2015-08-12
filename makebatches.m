@@ -1,91 +1,58 @@
-% Version 1.000
-%
-% Code provided by Ruslan Salakhutdinov and Geoff Hinton
-%
-% Permission is granted for anyone to copy, use, modify, or distribute this
-% program and accompanying programs and documents for any purpose, provided
-% this copyright notice is retained and prominently displayed, along with
-% a note saying that the original programs are available from our
-% web page.
-% The programs and documents are distributed without any warranty, express or
-% implied.  As the programs were written for research purposes only, they have
-% not been tested to the degree that would be advisable in any important
-% application.  All use of these programs is entirely at the user's own risk.
+%%% training batch data
+FileList = dir('training/*.png');
 
-digitdata=[]; 
-targets=[]; 
-load digit0; digitdata = [digitdata; D]; targets = [targets; repmat([1 0 0 0 0 0 0 0 0 0], size(D,1), 1)];  
-load digit1; digitdata = [digitdata; D]; targets = [targets; repmat([0 1 0 0 0 0 0 0 0 0], size(D,1), 1)];
-load digit2; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 1 0 0 0 0 0 0 0], size(D,1), 1)]; 
-load digit3; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 1 0 0 0 0 0 0], size(D,1), 1)];
-load digit4; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 1 0 0 0 0 0], size(D,1), 1)]; 
-load digit5; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 0 1 0 0 0 0], size(D,1), 1)];
-load digit6; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 0 0 1 0 0 0], size(D,1), 1)];
-load digit7; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 0 0 0 1 0 0], size(D,1), 1)];
-load digit8; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 0 0 0 0 1 0], size(D,1), 1)];
-load digit9; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 0 0 0 0 0 1], size(D,1), 1)];
-digitdata = digitdata/255;
-
-totnum=size(digitdata,1);
+totnum = length(FileList);
 fprintf(1, 'Size of the training dataset= %5d \n', totnum);
 
 rand('state',0); %so we know the permutation of the training data
 randomorder=randperm(totnum);
 
-numbatches=totnum/100;
-numdims  =  size(digitdata,2);
+numbatches = totnum/100;
 batchsize = 100;
+numdims = 32^2;
 batchdata = zeros(batchsize, numdims, numbatches);
 batchtargets = zeros(batchsize, 10, numbatches);
 
-for b=1:numbatches
-  batchdata(:,:,b) = digitdata(randomorder(1+(b-1)*batchsize:b*batchsize), :);
-  batchtargets(:,:,b) = targets(randomorder(1+(b-1)*batchsize:b*batchsize), :);
-end;
-
+for i=1:numbatches
+    for j=1:batchsize
+        index = randomorder((i-1)*batchsize+j);
+        a = strsplit(FileList(index).name,'_');
+        c = str2num(cell2mat(a(1)));
+        batchtargets(j,c,i) = 1;
+        img = imread(strcat('training/', FileList(index).name));
+        batchdata(j,:,i) = reshape(double(img), [1024,1])/255;
+    end
+end
 save trainbatch batchdata batchtargets;
 
-clear digitdata targets;
+%%%% test batch
+FileList = dir('test/*.png');
 
-digitdata=[];
-targets=[];
-load test0; digitdata = [digitdata; D]; targets = [targets; repmat([1 0 0 0 0 0 0 0 0 0], size(D,1), 1)]; 
-load test1; digitdata = [digitdata; D]; targets = [targets; repmat([0 1 0 0 0 0 0 0 0 0], size(D,1), 1)]; 
-load test2; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 1 0 0 0 0 0 0 0], size(D,1), 1)];
-load test3; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 1 0 0 0 0 0 0], size(D,1), 1)];
-load test4; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 1 0 0 0 0 0], size(D,1), 1)];
-load test5; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 0 1 0 0 0 0], size(D,1), 1)];
-load test6; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 0 0 1 0 0 0], size(D,1), 1)];
-load test7; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 0 0 0 1 0 0], size(D,1), 1)];
-load test8; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 0 0 0 0 1 0], size(D,1), 1)];
-load test9; digitdata = [digitdata; D]; targets = [targets; repmat([0 0 0 0 0 0 0 0 0 1], size(D,1), 1)];
-digitdata = digitdata/255;
-
-totnum=size(digitdata,1);
+totnum = length(FileList);
 fprintf(1, 'Size of the test dataset= %5d \n', totnum);
 
 rand('state',0); %so we know the permutation of the training data
 randomorder=randperm(totnum);
-
-numbatches=totnum/100;
-numdims  =  size(digitdata,2);
+numbatches = totnum/100;
 batchsize = 100;
+numdims = 32^2;
 testbatchdata = zeros(batchsize, numdims, numbatches);
 testbatchtargets = zeros(batchsize, 10, numbatches);
 
-for b=1:numbatches
-  testbatchdata(:,:,b) = digitdata(randomorder(1+(b-1)*batchsize:b*batchsize), :);
-  testbatchtargets(:,:,b) = targets(randomorder(1+(b-1)*batchsize:b*batchsize), :);
-end;
+for i=1:numbatches
+    for j=1:batchsize
+        index = randomorder((i-1)*batchsize+j);
+        a = strsplit(FileList(index).name,'_');
+        c = str2num(cell2mat(a(1)));
+        testbatchtargets(j,c,i) = 1;
+        img = imread(strcat('test/', FileList(index).name));
+        testbatchdata(j,:,i) = reshape(double(img), [1024,1])/255;
+    end
+end
 
 save testbatch testbatchdata testbatchtargets;
 
-clear digitdata targets;
+clear a c img;
 
-
-%%% Reset random seeds 
 rand('state',sum(100*clock)); 
 randn('state',sum(100*clock)); 
-
-
-

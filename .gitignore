@@ -1,3 +1,7 @@
 *.gz
+
 *-ubyte
-*.mat
+
+test
+testbatch.mat
+trainbatch.mat
