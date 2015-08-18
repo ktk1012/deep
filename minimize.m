@@ -34,7 +34,7 @@ function [X, fX, i] = minimize(X, f, length, varargin)
 %
 % Copyright (C) 2001 - 2006 by Carl Edward Rasmussen (2006-09-08).
 
-INT = 0.4;    % don't reevaluate within 0.1 of the limit of the current bracket
+INT = 0.2;    % don't reevaluate within 0.1 of the limit of the current bracket
 EXT = 3.0;                  % extrapolate maximum 3 times the current step-size
 MAX = 20;                         % max 20 function evaluations per line search
 RATIO = 12;                                       % maximum allowed slope ratio
@@ -64,7 +64,6 @@ SIG = 0.1; RHO = SIG/2; % SIG and RHO are the constants controlling the Wolfe-
 
 if max(size(length)) == 2, red=length(2); length=length(1); else red=1; end
 if length>0, S='Linesearch'; else S='Function evaluation'; end 
-
 i = 0;                                            % zero the run length counter
 ls_failed = 0;                             % no previous line search has failed
 [f0 df0] = feval(f, X, varargin{:});          % get function value and gradient
@@ -155,4 +154,5 @@ while i < abs(length)                                      % while not finished
     ls_failed = 1;                                    % this line search failed
   end
 end
+ls_failed
 fprintf('\n');

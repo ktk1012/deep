@@ -4,8 +4,10 @@ load trainbatch
 load testbatch
 load deepauto/mnist_weights
 
-data1 = [batchdata(100,:,3) 1];
+data1 = [batchdata(5,:,3) 1];
+[tar1 target1]=max(batchtargets(5,:,3),[],2);
 img1 = reshape(data1(1:1024), [32,32])*255;
+% target1 = batchtargets(50,:,3);
 img1 = (uint8(img1));
 w1probs1 = 1./(1 + exp(-data1*w1)); w1probs1 = [w1probs1  1];
 w2probs1 = 1./(1 + exp(-w1probs1*w2)); w2probs1 = [w2probs1 1];
@@ -17,7 +19,9 @@ w7probs1 = 1./(1 + exp(-w6probs1*w7)); w7probs1 = [w7probs1  1];
 dataout1 = 1./(1 + exp(-w7probs1*w8));
 
 % batchdata(1,:,1)
-data2 = [batchdata(5,:,1) 1];
+data2 = [batchdata(15,:,1) 1];
+% target2 = batchtargets(5,:,1);
+[tar2 target2]=max(batchtargets(15,:,1),[],2);
 img2 = reshape(data2(1:1024), [32,32])*255;
 img2 = (uint8(img2));
 w1probs2 = 1./(1 + exp(-data2*w1)); w1probs2 = [w1probs2  1];
@@ -47,4 +51,5 @@ im(1: 32, 41:72) = img2;
 im(41:72, 1:32) = img_mixed;
 im(41:72, 41:72) = img3;
 
-figure(), imshow(im);
+str = strcat('Mixed Person ', num2str(target1), 'and ', num2str(target2));
+figure('name', str), imshow(im);
