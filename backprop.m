@@ -21,12 +21,16 @@ maxepoch=200;
 fprintf(1,'\nFine-tuning deep autoencoder by minimizing cross entropy error. \n');
 fprintf(1,'60 batches of 1000 cases each. \n');
 
-load mnistvh
-load mnisthp
-load mnisthp2
-load mnistpo 
+load deepauto/mnistvh
+load deepauto/mnisthp
+load deepauto/mnisthp2
+load deepauto/mnistpo 
 
-makebatches;
+%makebatches;
+
+load trainbatch
+load testbatch
+
 [numcases numdims numbatches]=size(batchdata);
 N=numcases; 
 
@@ -151,8 +155,8 @@ for batch = 1:testnumbatches
 
  end
 
- save mnist_weights w1 w2 w3 w4 w5 w6 w7 w8 
- save mnist_error test_err train_err;
+ save deepauto/mnist_weights w1 w2 w3 w4 w5 w6 w7 w8 
+ save deepauto/mnist_error test_err train_err;
 
 end
 

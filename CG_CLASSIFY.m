@@ -20,6 +20,7 @@ l2 = Dim(2);
 l3= Dim(3);
 l4= Dim(4);
 l5= Dim(5);
+l6= Dim(6);
 N = size(XX,1);
 
 % Do decomversion.
@@ -29,23 +30,30 @@ N = size(XX,1);
  xxx = xxx+(l2+1)*l3;
  w3 = reshape(VV(xxx+1:xxx+(l3+1)*l4),l3+1,l4);
  xxx = xxx+(l3+1)*l4;
- w_class = reshape(VV(xxx+1:xxx+(l4+1)*l5),l4+1,l5);
+ w4 = reshape(VV(xxx+1:xxx+(l4+1)*l5),l4+1,l5);
+ xxx = xxx+(l4+1)*l5;
+ w_class = reshape(VV(xxx+1:xxx+(l5+1)*l6),l5+1,l6);
 
 
   XX = [XX ones(N,1)];
   w1probs = 1./(1 + exp(-XX*w1)); w1probs = [w1probs  ones(N,1)];
   w2probs = 1./(1 + exp(-w1probs*w2)); w2probs = [w2probs ones(N,1)];
   w3probs = 1./(1 + exp(-w2probs*w3)); w3probs = [w3probs  ones(N,1)];
+  w4probs = 1./(1 + exp(-w3probs*w4)); w4probs = [w4probs  ones(N,1)];
 
-  targetout = exp(w3probs*w_class);
+  targetout = exp(w4probs*w_class);
   targetout = targetout./repmat(sum(targetout,2),1,10);
   f = -sum(sum( target(:,1:end).*log(targetout))) ;
 
 IO = (targetout-target(:,1:end));
 Ix_class=IO; 
-dw_class =  w3probs'*Ix_class; 
+dw_class =  w4probs'*Ix_class; 
 
-Ix3 = (Ix_class*w_class').*w3probs.*(1-w3probs);
+Ix4 = (Ix_class*w_class').*w4probs.*(1-w4probs);
+Ix4 = Ix4(:,1:end-1);
+dw4 =  w3probs'*Ix4;
+
+Ix3 = (Ix4*w4').*w3probs.*(1-w3probs);
 Ix3 = Ix3(:,1:end-1);
 dw3 =  w2probs'*Ix3;
 
@@ -57,4 +65,4 @@ Ix1 = (Ix2*w2').*w1probs.*(1-w1probs);
 Ix1 = Ix1(:,1:end-1);
 dw1 =  XX'*Ix1;
 
-df = [dw1(:)' dw2(:)' dw3(:)' dw_class(:)']'; 
+df = [dw1(:)' dw2(:)' dw3(:)' dw4(:)' dw_class(:)']'; 

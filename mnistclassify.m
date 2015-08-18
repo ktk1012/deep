@@ -21,7 +21,7 @@ clear all
 close all
 
 maxepoch=50; 
-numhid=777; numpen=555; numpen2=333; 
+numhid=777; numpen=555; numpen2=333; numpen3=111;
 
 % fprintf(1,'Converting Raw files into Matlab format \n');
 % converter; 
@@ -40,7 +40,7 @@ fprintf(1,'Pretraining Layer 1 with RBM: %d-%d \n',numdims,numhid);
 restart=1;
 rbm;
 hidrecbiases=hidbiases; 
-save mnistvhclassify vishid hidrecbiases visbiases;
+save deep_classify/mnistvhclassify vishid hidrecbiases visbiases;
 
 fprintf(1,'\nPretraining Layer 2 with RBM: %d-%d \n',numhid,numpen);
 batchdata=batchposhidprobs;
@@ -48,7 +48,7 @@ numhid=numpen;
 restart=1;
 rbm;
 hidpen=vishid; penrecbiases=hidbiases; hidgenbiases=visbiases;
-save mnisthpclassify hidpen penrecbiases hidgenbiases;
+save deep_classify/mnisthpclassify hidpen penrecbiases hidgenbiases;
 
 fprintf(1,'\nPretraining Layer 3 with RBM: %d-%d \n',numpen,numpen2);
 batchdata=batchposhidprobs;
@@ -56,7 +56,16 @@ numhid=numpen2;
 restart=1;
 rbm;
 hidpen2=vishid; penrecbiases2=hidbiases; hidgenbiases2=visbiases;
-save mnisthp2classify hidpen2 penrecbiases2 hidgenbiases2;
+save deep_classify/mnisthp2classify hidpen2 penrecbiases2 hidgenbiases2;
+
+fprintf(1,'\nPretraining Layer 4 with RBM: %d-%d \n',numpen2,numpen3);
+batchdata=batchposhidprobs;
+numhid=numpen3;
+restart=1;
+rbm;
+hidpen3=vishid; penrecbiases3=hidbiases; hidgenbiases3=visbiases;
+save deep_classify/mnisthp3classify hidpen3 penrecbiases3 hidgenbiases3;
+
 
 backpropclassify; 
 

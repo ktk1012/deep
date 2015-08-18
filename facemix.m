@@ -2,7 +2,7 @@ im = uint8(ones(72, 72)*255);
 
 load trainbatch
 load testbatch
-load mnist_weights
+load deepauto/mnist_weights
 
 data1 = [batchdata(100,:,3) 1];
 img1 = reshape(data1(1:1024), [32,32])*255;
