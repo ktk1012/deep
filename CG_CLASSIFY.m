@@ -36,8 +36,10 @@ N = size(XX,1);
 
 
   XX = [XX ones(N,1)];
-  w1probs = 1./(1 + exp(-XX*w1)); w1probs = [w1probs  ones(N,1)];
-  w2probs = 1./(1 + exp(-w1probs*w2)); w2probs = [w2probs ones(N,1)];
+%   w1probs = 1./(1 + exp(-XX*w1)); w1probs = [w1probs  ones(N,1)];
+%   w2probs = 1./(1 + exp(-w1probs*w2)); w2probs = [w2probs ones(N,1)];
+    w1probs = max(0, XX*w1); w1probs = [w1probs ones(N,1)];
+    w2probs = max(0, w1probs*w2); w2probs = [w2probs ones(N,1)];
 %   w3probs = 1./(1 + exp(-w2probs*w3)); w3probs = [w3probs  ones(N,1)];
 %   w4probs = 1./(1 + exp(-w3probs*w4)); w4probs = [w4probs  ones(N,1)];
 
@@ -56,12 +58,15 @@ dw_class =  w2probs'*Ix_class;
 % Ix3 = (Ix4*w4').*w3probs.*(1-w3probs);
 % Ix3 = Ix3(:,1:end-1);
 % dw3 =  w2probs'*Ix3;
-
-Ix2 = (Ix_class*w_class').*w2probs.*(1-w2probs); 
+w22 = logical(0 < [w1probs*w2 ones(N,1)]);
+% Ix2 = (Ix_class*w_class').*w2probs.*(1-w2probs); 
+Ix2 = (Ix_class*w_class').*w22;
 Ix2 = Ix2(:,1:end-1);
 dw2 =  w1probs'*Ix2;
 
-Ix1 = (Ix2*w2').*w1probs.*(1-w1probs); 
+w11 = logical(0 < [XX*w1 ones(N,1)]);
+% Ix1 = (Ix2*w2').*w1probs.*(1-w1probs); 
+Ix1 = (Ix2*w2').*w11;
 Ix1 = Ix1(:,1:end-1);
 dw1 =  XX'*Ix1;
 

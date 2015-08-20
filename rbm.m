@@ -59,6 +59,7 @@ for epoch = epoch:maxepoch,
 %%%%%%%%% START POSITIVE PHASE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   data = batchdata(:,:,batch);
   poshidprobs = 1./(1 + exp(-data*vishid - repmat(hidbiases,numcases,1)));    
+%   poshidprobs = log(1+exp(data*vishid + repmat(hidbiases,numcases,1)));
   batchposhidprobs(:,:,batch)=poshidprobs;
   posprods    = data' * poshidprobs;
   poshidact   = sum(poshidprobs);
@@ -70,6 +71,8 @@ for epoch = epoch:maxepoch,
 %%%%%%%%% START NEGATIVE PHASE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   negdata = 1./(1 + exp(-poshidstates*vishid' - repmat(visbiases,numcases,1)));
   neghidprobs = 1./(1 + exp(-negdata*vishid - repmat(hidbiases,numcases,1)));    
+%   negdata = log(1 + exp(poshidstates*vishid' + repmat(visbiases,numcases,1)));
+%   neghidprobs = log(1 + exp(-negdata*vishid + repmat(hidbiases,numcases,1)));    
   negprods  = negdata'*neghidprobs;
   neghidact = sum(neghidprobs);
   negvisact = sum(negdata); 

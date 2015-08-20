@@ -21,7 +21,7 @@ clear all
 close all
 
 maxepoch=50; %In the Science paper we use maxepoch=50, but it works just fine. 
-numhid=777; numpen=555; numpen2=333; numopen=10;
+numhid=777; numpen=555; numpen2=333; numopen=100;
 
 fprintf(1,'Converting Raw files into Matlab format \n');
 %converter; 

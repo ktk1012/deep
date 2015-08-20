@@ -20,7 +20,6 @@ N = size(w3probs,1);
 % Do decomversion.
   w_class = reshape(VV,l1+1,l2);
   w3probs = [w3probs  ones(N,1)];  
-
   targetout = exp(w3probs*w_class);
   targetout = targetout./repmat(sum(targetout,2),1,10);
   f = -sum(sum( target(:,1:end).*log(targetout))) ;

@@ -56,7 +56,6 @@ l4=10;
 test_err=[];
 train_err=[];
 
-
 for epoch = 1:maxepoch
 
 %%%%%%%%%%%%%%%%%%%% COMPUTE TRAINING MISCLASSIFICATION ERROR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,8 +68,10 @@ N=numcases;
   data = [batchdata(:,:,batch)];
   target = [batchtargets(:,:,batch)];
   data = [data ones(N,1)];
-  w1probs = 1./(1 + exp(-data*w1)); w1probs = [w1probs  ones(N,1)];
-  w2probs = 1./(1 + exp(-w1probs*w2)); w2probs = [w2probs ones(N,1)];
+% %   w1probs = 1./(1 + exp(-data*w1)); w1probs = [w1probs  ones(N,1)];
+% %   w2probs = 1./(1 + exp(-w1probs*w2)); w2probs = [w2probs ones(N,1)];
+  w1probs = max(0, data*w1); w1probs = [w1probs ones(N,1)];
+  w2probs = max(0, w1probs*w2); w2probs = [w2probs ones(N,1)];
 %   w3probs = 1./(1 + exp(-w2probs*w3)); w3probs = [w3probs  ones(N,1)];
 %   w4probs = 1./(1 + exp(-w3probs*w4)); w4probs = [w4probs  ones(N,1)];
   targetout = exp(w2probs*w_class);
@@ -96,8 +97,10 @@ for batch = 1:testnumbatches
   data = [testbatchdata(:,:,batch)];
   target = [testbatchtargets(:,:,batch)];
   data = [data ones(N,1)];
-  w1probs = 1./(1 + exp(-data*w1)); w1probs = [w1probs  ones(N,1)];
-  w2probs = 1./(1 + exp(-w1probs*w2)); w2probs = [w2probs ones(N,1)];
+% %   w1probs = 1./(1 + exp(-data*w1)); w1probs = [w1probs  ones(N,1)];
+% %   w2probs = 1./(1 + exp(-w1probs*w2)); w2probs = [w2probs ones(N,1)];
+  w1probs = max(0, data*w1); w1probs = [w1probs ones(N,1)];
+  w2probs = max(0, w1probs*w2); w2probs = [w2probs ones(N,1)];
 %   w3probs = 1./(1 + exp(-w2probs*w3)); w3probs = [w3probs  ones(N,1)];
 %   w4probs = 1./(1 + exp(-w3probs*w4)); w4probs = [w4probs  ones(N,1)];
   targetout = exp(w2probs*w_class);
@@ -130,8 +133,10 @@ end
   if epoch<21  % First update top-level weights holding other weights fixed. 
     N = size(data,1);
     XX = [data ones(N,1)];
-    w1probs = 1./(1 + exp(-XX*w1)); w1probs = [w1probs  ones(N,1)];
-    w2probs = 1./(1 + exp(-w1probs*w2)); %w2probs = [w2probs ones(N,1)];
+    w1probs = max(0, XX*w1); w1probs = [w1probs ones(N,1)];
+    w2probs = max(0, w1probs*w2); %w2probs = [w2probs 1];
+% %     w1probs = 1./(1 + exp(-XX*w1)); w1probs = [w1probs  ones(N,1)];
+% %     w2probs = 1./(1 + exp(-w1probs*w2)); %w2probs = [w2probs ones(N,1)];
 %     w3probs = 1./(1 + exp(-w2probs*w3)); w3probs = [w3probs  ones(N,1)];
 %     w4probs = 1./(1 + exp(-w3probs*w4)); %w4probs = [w4probs  ones(N,1)];
     
@@ -159,11 +164,13 @@ end
 %%%%%%%%%%%%%%% END OF CONJUGATE GRADIENT WITH 3 LINESEARCHES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
  end
-
+ plot(test_err);
+ hold on
+ drawnow
  save deep_classify/mnistclassify_weights w1 w2 w_class
  save deep_classify/mnistclassify_error test_err test_crerr train_err train_crerr;
-
 end
+hold off;
 
 
 

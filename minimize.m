@@ -34,7 +34,7 @@ function [X, fX, i] = minimize(X, f, length, varargin)
 %
 % Copyright (C) 2001 - 2006 by Carl Edward Rasmussen (2006-09-08).
 
-INT = 0.2;    % don't reevaluate within 0.1 of the limit of the current bracket
+INT = 0.3;    % don't reevaluate within 0.1 of the limit of the current bracket
 EXT = 3.0;                  % extrapolate maximum 3 times the current step-size
 MAX = 20;                         % max 20 function evaluations per line search
 RATIO = 12;                                       % maximum allowed slope ratio
